@@ -136,7 +136,12 @@
       b.onclick = () => {
         state[kind] = p.id;
         syncActive();
-        if (state.phase === "reveal") renderOppList();
+        if (state.phase === "reveal") {
+          renderOppList();
+          // 球员配置变了 → 重新按新配置选中主推机会点并演示
+          const primary = pickPrimaryOpp(PNR_DATA.defenseReactions[state.defense]);
+          selectOpportunity(primary.id);
+        }
       };
       container.appendChild(b);
     });
@@ -180,6 +185,7 @@
 
     el.stageControls.classList.remove("hidden");
     el.btnNext.textContent = "下一步 →";
+    el.btnNext.disabled = false;
 
     say(`你选择了「${r.name}」：${r.oneLine} 点“下一步”，看防守怎么动。`);
   }
@@ -204,7 +210,17 @@
     focusDots(step.focus || []);
 
     state.stepIndex++;
-    if (state.stepIndex >= steps.length) el.btnNext.textContent = "看暴露的机会点 ◎";
+
+    // 最后一步走完：不再要求用户多点一次，自动进入机会点揭示
+    if (state.stepIndex >= steps.length) {
+      el.btnNext.textContent = "揭示机会点…";
+      el.btnNext.disabled = true;
+      const t = setTimeout(() => {
+        el.btnNext.disabled = false;
+        enterReveal();
+      }, 1400);
+      state.playTimers.push(t);
+    }
   }
 
   function enterReveal() {
@@ -219,7 +235,11 @@
       state.stageSnapshot[id] = { left: dots[id].style.left, top: dots[id].style.top };
     });
 
-    say("防守已经做出选择。现在按顺序，看看哪里出现了机会。点机会点看完整演示。");
+    // 主推机会点：契合当前球员配置、质量最高的那个（球员类型接入演示）
+    const primary = pickPrimaryOpp(r);
+    const h = PNR_DATA.playerTypes.ballHandler.find((p) => p.id === state.handler);
+    const s = PNR_DATA.playerTypes.screener.find((p) => p.id === state.screener);
+    say(`按你的配置（${h.name} + ${s.name}），首选是「${primary.name}」。其余机会按看球顺序依次亮起。`);
 
     el.readOrder.innerHTML = "";
     r.readOrder.forEach((t) => {
@@ -229,14 +249,35 @@
     });
 
     el.oppLayer.innerHTML = "";
-    // 按时机逐个揭示：先亮高质量/转瞬即逝的，配窗口提示，引导"看球顺序"
-    r.opportunities.forEach((opp, i) => setTimeout(() => spawnOpp(opp), 420 * (i + 1)));
+    // 按"看球顺序"揭示：主推先亮，其余按数据顺序依次出现，牵引视线
+    const order = revealOrder(r, primary);
+    order.forEach((opp, i) => {
+      const t = setTimeout(() => spawnOpp(opp), 420 * (i + 1));
+      state.playTimers.push(t);
+    });
     renderOppList();
 
-    setTimeout(() => {
+    const tEnd = 420 * (order.length + 1);
+    const t1 = setTimeout(() => {
       el.takeawayBlock.classList.remove("hidden");
       el.takeawayText.textContent = r.takeaway;
-    }, 420 * (r.opportunities.length + 1));
+    }, tEnd);
+    // 全部亮完后，自动选中主推机会点并演示一遍（球员配置决定默认演示内容）
+    const t2 = setTimeout(() => selectOpportunity(primary.id), tEnd + 300);
+    state.playTimers.push(t1, t2);
+  }
+
+  // 主推：先取契合球员配置且质量最高者；没有契合的则取整体质量最高者
+  function pickPrimaryOpp(r) {
+    const rank = { high: 3, medium: 2, low: 1 };
+    const fit = r.opportunities.filter(isRecommended);
+    const pool = fit.length ? fit : r.opportunities;
+    return pool.slice().sort((a, b) => rank[b.quality] - rank[a.quality])[0];
+  }
+
+  // 揭示顺序：主推排第一，其余维持数据原顺序
+  function revealOrder(r, primary) {
+    return [primary, ...r.opportunities.filter((o) => o.id !== primary.id)];
   }
 
   // 窗口性质 → 显示文案 / class
@@ -278,14 +319,19 @@
   function renderOppList() {
     if (!state.defense) return;
     const r = PNR_DATA.defenseReactions[state.defense];
+    const primary = pickPrimaryOpp(r);   // 随球员配置变化
     el.oppList.innerHTML = "";
     r.opportunities.forEach((opp) => {
       const li = document.createElement("li");
       const ph = phaseOf(opp);
+      const isPrimary = opp.id === primary.id;
       li.className = `q-${opp.quality}` + (opp.id === state.selectedOpp ? " selected" : "");
       li.innerHTML =
-        `<span class="opp-li-main">${opp.name}${isRecommended(opp) ? " ★" : ""}` +
-        `<span class="opp-li-phase ${ph.cls}">⏱ ${ph.label}</span></span>` +
+        `<span class="opp-li-main">` +
+          `${opp.name}${isRecommended(opp) ? " ★" : ""}` +
+          (isPrimary ? `<span class="primary-tag">本配置首选</span>` : "") +
+          `<span class="opp-li-phase ${ph.cls}">⏱ ${ph.label}</span>` +
+        `</span>` +
         `<span class="quality-badge q-${opp.quality}">${qualityLabel[opp.quality]}</span>`;
       li.onclick = () => selectOpportunity(opp.id);
       el.oppList.appendChild(li);

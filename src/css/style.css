@@ -503,8 +503,16 @@ html, body {
 .opp-detail .d-label { color: var(--text-dim); display: block; font-size: 12px; margin-bottom: 2px; }
 
 /* 时间窗口标签（列表 + 详情通用） */
-.opp-li-main { display: flex; flex-direction: column; gap: 3px; }
+.opp-li-main { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
 .opp-li-phase { font-size: 10px; font-weight: 600; }
+.primary-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1a1206;
+  background: linear-gradient(90deg, var(--offense), var(--ball));
+  padding: 1px 7px;
+  border-radius: 20px;
+}
 .phase-badge {
   display: inline-block;
   font-size: 11px;
