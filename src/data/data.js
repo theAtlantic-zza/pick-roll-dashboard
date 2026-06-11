@@ -54,7 +54,7 @@ const PNR_DATA = {
   defenseReactions: {
     over: {
       id: "over",
-      name: "Over 挤过",
+      name: "挤过 Over",
       tier: "advanced",
       oneLine: "死贴着追上方，专防你的投篮。",
       description:
@@ -100,7 +100,7 @@ const PNR_DATA = {
 
     under: {
       id: "under",
-      name: "Under 绕下",
+      name: "绕下 Under",
       tier: "advanced",
       oneLine: "从掩护下面钻过去，放掉外线投篮。",
       description:
@@ -146,7 +146,7 @@ const PNR_DATA = {
 
     drop: {
       id: "drop",
-      name: "Drop 沉退",
+      name: "沉退 Drop",
       tier: "core",
       oneLine: "大个后撤护框，放掉中距离。",
       description:
@@ -284,7 +284,7 @@ const PNR_DATA = {
 
     switch: {
       id: "switch",
-      name: "Switch 换防",
+      name: "换防 Switch",
       tier: "core",
       oneLine: "干脆换人，但会换出错位。",
       description:
@@ -330,7 +330,7 @@ const PNR_DATA = {
 
     trap: {
       id: "trap",
-      name: "Trap 夹击",
+      name: "夹击 Trap",
       tier: "core",
       oneLine: "两人包夹逼出球，但放空了一个人。",
       description:
