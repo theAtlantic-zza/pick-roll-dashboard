@@ -401,6 +401,11 @@ html, body {
   0% { box-shadow: 0 0 0 0 currentColor; opacity: .5; }
   100% { box-shadow: 0 0 0 14px transparent; opacity: 0; }
 }
+/* 时间窗口可视化：越紧迫脉冲越快越急 */
+.opp.phase-fleeting .opp-pulse { animation-duration: 0.7s; }   /* 转瞬即逝：急促闪烁 */
+.opp.phase-brief    .opp-pulse { animation-duration: 1.3s; }   /* 短暂 */
+.opp.phase-stable   .opp-pulse { animation-duration: 2.4s; }   /* 从容：缓慢呼吸 */
+.opp.phase-fleeting { border-style: solid; }                   /* 紧迫的用实线边更醒目 */
 .opp .opp-tag {
   font-size: 10px;
   font-weight: 700;
@@ -496,6 +501,24 @@ html, body {
 .opp-detail .d-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
 .opp-detail .d-row { margin: 10px 0; line-height: 1.6; font-size: 13px; }
 .opp-detail .d-label { color: var(--text-dim); display: block; font-size: 12px; margin-bottom: 2px; }
+
+/* 时间窗口标签（列表 + 详情通用） */
+.opp-li-main { display: flex; flex-direction: column; gap: 3px; }
+.opp-li-phase { font-size: 10px; font-weight: 600; }
+.phase-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.phase-fleeting { color: var(--q-low); }
+.phase-brief    { color: var(--q-medium); }
+.phase-stable   { color: var(--q-high); }
+.phase-badge.phase-fleeting { background: rgba(255,107,107,.16); }
+.phase-badge.phase-brief    { background: rgba(245,197,66,.16); }
+.phase-badge.phase-stable   { background: rgba(47,210,122,.16); }
+.timing-hint { color: var(--text-dim); font-size: 12px; margin-top: 5px; line-height: 1.5; }
 .opp-detail .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 .opp-detail .tag {
   font-size: 11px;

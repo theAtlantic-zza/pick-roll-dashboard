@@ -67,6 +67,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "over-drive", name: "借掩护加速突破", quality: "high", target: "A1", x: 48, y: 36, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：趁 D1 挤过失去重心那一下加速，慢了他就跟上来了。" },
           explanation: "D1 贴身挤过会失去重心，持球人借掩护那一下加速，从其身侧杀向篮筐。",
           goodFor: ["突破型后卫"], badFor: ["投射型后卫"],
           play: [
@@ -75,6 +76,7 @@ const PNR_DATA = {
             { note: "D5 仍沉退，A1 直接从缝隙杀进去", ball: "A1", actors: [{ id: "A1", x: 48, y: 34 }, { id: "D5", x: 50, y: 28 }] }
           ] },
         { id: "over-roll", name: "顺下吃饼", quality: "high", target: "A5", x: 50, y: 24, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：要在 D5 决定是否上来补防的那一下喂出顺下。" },
           explanation: "持球人吸引贴身追防后，A5 顺下；防中锋若来补持球人就漏了顺下。",
           goodFor: ["顺下型中锋", "传球型后卫"], badFor: ["空间型内线"],
           play: [
@@ -83,6 +85,7 @@ const PNR_DATA = {
             { note: "D5 被牵制，A1 喂球给顺下的 A5", ball: "A5", actors: [{ id: "A5", x: 50, y: 24 }] }
           ] },
         { id: "over-reject", name: "拒绝掩护反向走", quality: "medium", target: "A1", x: 64, y: 44, finish: "drive",
+          timing: { phase: "fleeting", hint: "一瞬即逝：只有 D1 已经往掩护侧偏了、来不及变向那一刻有效。" },
           explanation: "防守预判挤过方向时，持球人“拒绝掩护”反向走，打防守者的预判。",
           goodFor: ["突破型后卫"], badFor: [],
           play: [
@@ -110,6 +113,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "under-three", name: "掩护上沿三分", quality: "high", target: "A1", x: 50, y: 64, finish: "shot",
+          timing: { phase: "stable", hint: "从容窗口：D1 既然绕下了，上沿这片空间就摆在那，敢投就有时间。" },
           explanation: "D1 绕下后，持球人在掩护上沿获得大片空间，投射型后卫直接起跳三分。",
           goodFor: ["投射型后卫"], badFor: ["突破型后卫"],
           play: [
@@ -118,6 +122,7 @@ const PNR_DATA = {
             { note: "D1 还在篮下，A1 大空位起跳三分", ball: "A1", actors: [] }
           ] },
         { id: "under-rescreen", name: "重新做掩护", quality: "medium", target: "A5", x: 56, y: 54, finish: "drive",
+          timing: { phase: "stable", hint: "可重置：没有时间压力，重新做掩护逼防守再选一次。" },
           explanation: "若不擅长投射，A5 调整角度再做一次掩护，逼防守者重新做选择。",
           goodFor: ["顺下型中锋", "策应型中锋"], badFor: ["空间型内线"],
           play: [
@@ -126,6 +131,7 @@ const PNR_DATA = {
             { note: "A5 顺下，A1 喂球攻框", ball: "A5", actors: [{ id: "A5", x: 54, y: 34 }] }
           ] },
         { id: "under-closeout", name: "突破扑防", quality: "medium", target: "A1", x: 48, y: 38, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：趁 D1 扑出来重心前压、还没站稳的那一下突破。" },
           explanation: "防守者意识到投篮威胁而扑出时，持球人顺势突破其扑防（closeout）攻框。",
           goodFor: ["突破型后卫"], badFor: ["投射型后卫"],
           play: [
@@ -153,6 +159,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "drop-midrange", name: "弧顶中距离急停", quality: "high", target: "A1", x: 46, y: 50, finish: "shot",
+          timing: { phase: "stable", hint: "从容窗口：Drop 本来就放你投中距离，只要你敢投，时间很充裕。" },
           explanation: "Drop 主动让出中距离，持球人借掩护后顺势急停跳投，是最稳定的得分点。",
           goodFor: ["投射型后卫"], badFor: ["突破型后卫", "传球型后卫"],
           play: [
@@ -161,18 +168,20 @@ const PNR_DATA = {
             { note: "A1 在中距离急停拔起", ball: "A1", actors: [] }
           ] },
         { id: "drop-pocket", name: "口袋传球喂顺下", quality: "medium", target: "A5", x: 58, y: 36, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：要抢在沉退的 D5 完全落位前喂出，晚了篮下就被堵死。" },
           explanation: "D5 沉退留出短传空间，持球人低手口袋传球给顺下中锋，抢在沉退者落位前接球。",
           goodFor: ["传球型后卫", "顺下型中锋"], badFor: ["空间型内线"],
           play: [
-            { note: "A1 运球牵制 D1", ball: "A1", actors: [{ id: "A1", x: 48, y: 54 }, { id: "D1", x: 50, y: 50 }] },
+            { note: "A1 运球牵制 D1，A4 拉到弧顶拉开空间", ball: "A1", actors: [{ id: "A1", x: 48, y: 54 }, { id: "D1", x: 50, y: 50 }, { id: "A4", x: 72, y: 64 }] },
             { note: "A5 顺下，钻到 D5 身前的口袋区", ball: "A1", actors: [{ id: "A5", x: 56, y: 42 }] },
             { note: "A1 低手口袋传球给 A5", ball: "A5", actors: [{ id: "A5", x: 58, y: 36 }] }
           ] },
         { id: "drop-attack", name: "中段加速攻框", quality: "medium", target: "A1", x: 40, y: 26, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：趁 D5 站得深、还没决定上不上来的那一下提速。" },
           explanation: "若 D5 站位偏深，持球人在中段提速攻框，迫使内线提前做选择。",
           goodFor: ["突破型后卫"], badFor: ["投射型后卫"],
           play: [
-            { note: "A1 借掩护加速过中线", ball: "A1", actors: [{ id: "A1", x: 45, y: 48 }, { id: "D1", x: 49, y: 52 }] },
+            { note: "A1 借掩护加速过中线，A4 沉底角清空突破路线", ball: "A1", actors: [{ id: "A1", x: 45, y: 48 }, { id: "D1", x: 49, y: 52 }, { id: "A4", x: 84, y: 22 }] },
             { note: "D5 站得太深，A1 提速冲击", ball: "A1", actors: [{ id: "A1", x: 42, y: 36 }, { id: "D5", x: 48, y: 26 }] },
             { note: "杀到篮下逼 D5 做选择", ball: "A1", actors: [{ id: "A1", x: 40, y: 26 }] }
           ] }
@@ -196,26 +205,29 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "hh-roll", name: "大个身后顺下", quality: "high", target: "A5", x: 50, y: 26, finish: "drive",
-          explanation: "D5 冲得越高，身后篮下越空。A5 顺下接球，几乎是空篮。",
+          timing: { phase: "fleeting", hint: "窗口极短：D5 冲出去到回防归位，只有这一两秒。慢一拍，篮下就补上了。" },
+          explanation: "D5 冲得越高，身后篮下越空。A5 顺下接球，几乎是空篮——但必须在 D5 回防前出球。",
           goodFor: ["顺下型中锋", "传球型后卫"], badFor: ["空间型内线"],
           play: [
             { note: "D5 冲出弧顶延误，A1 后撤运球", ball: "A1", actors: [{ id: "A1", x: 46, y: 62 }] },
             { note: "A5 趁 D5 冲高，立刻往身后篮下顺", ball: "A1", actors: [{ id: "A5", x: 50, y: 38 }] },
-            { note: "A1 越过延误传球，A5 空切篮下", ball: "A5", actors: [{ id: "A5", x: 50, y: 26 }] }
+            { note: "就是这一下！A1 越过延误传球，A5 空切篮下", ball: "A5", actors: [{ id: "A5", x: 50, y: 26 }] }
           ] },
         { id: "hh-pocket", name: "口袋传球穿缝", quality: "high", target: "A5", x: 50, y: 40, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：两人并排延误时缝隙才在，等他们贴拢就没了。" },
           explanation: "两名延误防守人之间有缝隙，一记口袋传球穿过去喂给短顺下的 A5，发起 4 打 3。",
           goodFor: ["传球型后卫", "策应型中锋"], badFor: [],
           play: [
             { note: "D1、D5 并排延误，中间留出缝隙", ball: "A1", actors: [{ id: "A1", x: 47, y: 60 }] },
-            { note: "A5 短顺下到罚球线，要球", ball: "A1", actors: [{ id: "A5", x: 50, y: 46 }] },
+            { note: "A5 短顺下到罚球线，A4 拉到弧顶接应", ball: "A1", actors: [{ id: "A5", x: 50, y: 46 }, { id: "A4", x: 70, y: 64 }] },
             { note: "A1 一记口袋传球穿过缝隙喂 A5", ball: "A5", actors: [{ id: "A5", x: 50, y: 40 }] }
           ] },
         { id: "hh-weakside", name: "弱侧底角转移", quality: "medium", target: "A2", x: 8, y: 26, finish: "shot",
+          timing: { phase: "stable", hint: "二次窗口：等防守收缩补防顺下后才出现，相对从容，是第二落点。" },
           explanation: "防守为补防顺下而收缩，弱侧底角射手被放空，是第二落点的空位三分。",
           goodFor: ["传球型后卫", "投射型后卫"], badFor: [],
           play: [
-            { note: "A5 短顺下吸引防守收缩", ball: "A1", actors: [{ id: "A5", x: 50, y: 44 }, { id: "D2", x: 16, y: 36 }] },
+            { note: "A5 短顺下吸引防守收缩，A3 弱侧上提拉开", ball: "A1", actors: [{ id: "A5", x: 50, y: 44 }, { id: "D2", x: 16, y: 36 }, { id: "A3", x: 88, y: 50 }] },
             { note: "弱侧 D2 内收补防，A2 底角被放空", ball: "A1", actors: [{ id: "A1", x: 30, y: 58 }] },
             { note: "球转移到弱侧底角 A2 空位三分", ball: "A2", actors: [] }
           ] }
@@ -239,6 +251,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "sh-midrange", name: "抬手中距离", quality: "medium", target: "A1", x: 50, y: 44, finish: "shot",
+          timing: { phase: "stable", hint: "相对从容：弱延误回防快，但中距离这口是它默认让给你的。" },
           explanation: "弱延误不放突也不放篮下，留给持球人的主要是中距离跳投，质量中等。",
           goodFor: ["投射型后卫"], badFor: ["突破型后卫"],
           play: [
@@ -247,6 +260,7 @@ const PNR_DATA = {
             { note: "A1 抬手出手中距离", ball: "A1", actors: [] }
           ] },
         { id: "sh-slip", name: "掩护人溜底", quality: "medium", target: "A5", x: 50, y: 30, finish: "drive",
+          timing: { phase: "fleeting", hint: "一瞬即逝：必须抢在弱延误阵型收拢前，晚一步篮下就没了。" },
           explanation: "弱延误回防快，A5 若提前溜底（slip），可在阵型收拢前抢一个攻框机会。",
           goodFor: ["顺下型中锋"], badFor: ["空间型内线"],
           play: [
@@ -255,6 +269,7 @@ const PNR_DATA = {
             { note: "A1 抢在阵型收拢前喂球给 A5", ball: "A5", actors: [{ id: "A5", x: 50, y: 30 }] }
           ] },
         { id: "sh-reset", name: "回传重新组织", quality: "low", target: "A4", x: 78, y: 50, finish: "shot",
+          timing: { phase: "stable", hint: "无窗口压力：本就是没机会时的稳妥选择，重置进攻。" },
           explanation: "弱延误本就为破坏节奏，没有好机会时回传给 A4 重新发起，比强行处理更稳。",
           goodFor: ["传球型后卫"], badFor: ["突破型后卫"],
           play: [
@@ -282,6 +297,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "switch-iso", name: "持球人打大个错位", quality: "high", target: "A1", x: 50, y: 50, finish: "drive",
+          timing: { phase: "stable", hint: "持续窗口：错位换出来就一直在，不急，可以从容选时机单打。" },
           explanation: "换防后大个 D5 对位后卫，速度劣势。突破型后卫直接面框单打错位攻框。",
           goodFor: ["突破型后卫", "投射型后卫"], badFor: ["传球型后卫"],
           play: [
@@ -290,6 +306,7 @@ const PNR_DATA = {
             { note: "过掉大个，杀向篮筐", ball: "A1", actors: [{ id: "A1", x: 49, y: 32 }] }
           ] },
         { id: "switch-post", name: "中锋低位打小个", quality: "high", target: "A5", x: 38, y: 24, finish: "post",
+          timing: { phase: "stable", hint: "持续窗口：体型错位也一直在，但要趁防守包夹来之前把球喂进低位。" },
           explanation: "换防后小个 D1 对位 A5，把球转移到低位要位，利用身高体重错位强打。",
           goodFor: ["顺下型中锋", "策应型中锋"], badFor: ["空间型内线"],
           play: [
@@ -298,6 +315,7 @@ const PNR_DATA = {
             { note: "A5 背身强打小个", ball: "A5", actors: [{ id: "A5", x: 38, y: 24 }] }
           ] },
         { id: "switch-slip", name: "提前溜底（slip）", quality: "medium", target: "A5", x: 50, y: 30, finish: "drive",
+          timing: { phase: "fleeting", hint: "一瞬即逝：只有“换防交接”那半秒没人管 A5，错过就被接管。" },
           explanation: "预判换防，A5 不实掩护而提前溜向篮下，抢在换防完成前接球攻框。",
           goodFor: ["顺下型中锋"], badFor: ["空间型内线"],
           play: [
@@ -325,6 +343,7 @@ const PNR_DATA = {
       ],
       opportunities: [
         { id: "short-roll", name: "短顺下", quality: "high", target: "A5", x: 50, y: 36, finish: "drive",
+          timing: { phase: "fleeting", hint: "一瞬即逝：包夹一形成就得马上出球，慢半拍夹击就把你的球掏了。" },
           explanation: "夹击持球人后，A5 身后出现短暂空档。传给短顺下中锋，可形成 4 打 3。",
           goodFor: ["传球型后卫", "策应型中锋", "顺下型中锋"], badFor: ["空间型内线"],
           play: [
@@ -333,6 +352,7 @@ const PNR_DATA = {
             { note: "A1 越过包夹传给 A5，4 打 3 发起", ball: "A5", actors: [{ id: "A5", x: 50, y: 36 }] }
           ] },
         { id: "trap-corner", name: "弱侧底角", quality: "medium", target: "A2", x: 8, y: 26, finish: "shot",
+          timing: { phase: "brief", hint: "二次窗口：短顺下逼防守收缩之后才出现，是“多打少”的第二传。" },
           explanation: "防守收缩补防短顺下后，弱侧底角射手被放空，是短顺下之后的二次出球点。",
           goodFor: ["传球型后卫", "投射型后卫"], badFor: [],
           play: [
@@ -341,6 +361,7 @@ const PNR_DATA = {
             { note: "球转移到底角 A2 空位三分", ball: "A2", actors: [] }
           ] },
         { id: "trap-finish", name: "顺下攻框", quality: "medium", target: "A5", x: 50, y: 22, finish: "drive",
+          timing: { phase: "brief", hint: "短暂窗口：补防不及时才有，A5 接球得果断，否则协防就到位了。" },
           explanation: "若补防不及时，短顺下中锋直接持球攻框，在 4 打 3 中完成终结。",
           goodFor: ["顺下型中锋"], badFor: ["空间型内线"],
           play: [
@@ -349,6 +370,7 @@ const PNR_DATA = {
             { note: "A5 攻框终结", ball: "A5", actors: [{ id: "A5", x: 50, y: 22 }] }
           ] },
         { id: "trap-shot", name: "持球人抢投/脱困", quality: "low", target: "A1", x: 52, y: 56, finish: "shot",
+          timing: { phase: "fleeting", hint: "几乎没有窗口：合围前的电光石火，勉强出手，不推荐当首选。" },
           explanation: "夹击合围前的瞬间，投射型后卫抢在合围前出手，但时间窗口极小，质量偏低。",
           goodFor: ["投射型后卫"], badFor: ["突破型后卫", "传球型后卫"],
           play: [

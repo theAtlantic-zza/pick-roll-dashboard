@@ -229,18 +229,30 @@
     });
 
     el.oppLayer.innerHTML = "";
-    r.opportunities.forEach((opp, i) => setTimeout(() => spawnOpp(opp), 350 * (i + 1)));
+    // 按时机逐个揭示：先亮高质量/转瞬即逝的，配窗口提示，引导"看球顺序"
+    r.opportunities.forEach((opp, i) => setTimeout(() => spawnOpp(opp), 420 * (i + 1)));
     renderOppList();
 
     setTimeout(() => {
       el.takeawayBlock.classList.remove("hidden");
       el.takeawayText.textContent = r.takeaway;
-    }, 350 * (r.opportunities.length + 1));
+    }, 420 * (r.opportunities.length + 1));
+  }
+
+  // 窗口性质 → 显示文案 / class
+  const PHASE = {
+    fleeting: { label: "转瞬即逝", cls: "phase-fleeting" },
+    brief:    { label: "短暂窗口", cls: "phase-brief" },
+    stable:   { label: "相对从容", cls: "phase-stable" }
+  };
+  function phaseOf(opp) {
+    return (opp.timing && PHASE[opp.timing.phase]) || PHASE.brief;
   }
 
   function spawnOpp(opp) {
     const node = document.createElement("div");
-    node.className = `opp q-${opp.quality}`;
+    const ph = phaseOf(opp);
+    node.className = `opp q-${opp.quality} ${ph.cls}`;
     node.dataset.id = opp.id;
     node.style.left = opp.x + "%";
     node.style.top = opp.y + "%";
@@ -269,9 +281,11 @@
     el.oppList.innerHTML = "";
     r.opportunities.forEach((opp) => {
       const li = document.createElement("li");
+      const ph = phaseOf(opp);
       li.className = `q-${opp.quality}` + (opp.id === state.selectedOpp ? " selected" : "");
       li.innerHTML =
-        `<span>${opp.name}${isRecommended(opp) ? " ★" : ""}</span>` +
+        `<span class="opp-li-main">${opp.name}${isRecommended(opp) ? " ★" : ""}` +
+        `<span class="opp-li-phase ${ph.cls}">⏱ ${ph.label}</span></span>` +
         `<span class="quality-badge q-${opp.quality}">${qualityLabel[opp.quality]}</span>`;
       li.onclick = () => selectOpportunity(opp.id);
       el.oppList.appendChild(li);
@@ -385,7 +399,8 @@
       const fx = parseFloat(finisher.style.left);
       const fy = parseFloat(finisher.style.top);
       finisher.classList.add("shooting");
-      say(`${opp.name}：${finishWord(opp.finish)}，球飞向篮筐完成终结。`);
+      const hint = opp.timing ? `（${phaseOf(opp).label}：${opp.timing.hint}）` : "";
+      say(`${opp.name}：${finishWord(opp.finish)}，球飞向篮筐完成终结。${hint}`);
       drawLine(fx, fy, rim.x, rim.y, "shot-line");
       dots.BALL.style.left = rim.x + "%";
       dots.BALL.style.top = rim.y + "%";
@@ -416,11 +431,16 @@
       ? opp.badFor.map((b) => `<span class="tag bad">${b}</span>`).join("")
       : `<span class="tag">无明显限制</span>`;
 
+    const ph = phaseOf(opp);
+    const timingHint = opp.timing ? opp.timing.hint : "";
     el.oppDetail.classList.remove("empty");
     el.oppDetail.innerHTML = `
       <div class="d-name">${opp.name}</div>
       <div class="d-row"><span class="d-label">机会质量</span>
         <span class="quality-badge q-${opp.quality}">${qualityLabel[opp.quality]}</span></div>
+      <div class="d-row"><span class="d-label">时间窗口</span>
+        <span class="phase-badge ${ph.cls}">⏱ ${ph.label}</span>
+        <div class="timing-hint">${timingHint}</div></div>
       <div class="d-row"><span class="d-label">为什么成立</span>${opp.explanation}</div>
       <div class="d-row"><span class="d-label">适合的球员（★ = 当前配置）</span>
         <span class="tags">${fit}</span></div>
