@@ -55,6 +55,7 @@ const PNR_DATA = {
     over: {
       id: "over",
       name: "Over 挤过",
+      tier: "advanced",
       oneLine: "死贴着追上方，专防你的投篮。",
       description:
         "防控卫的 D1 追着持球人、从掩护上方挤过去（fight over），死贴不放投。对付强投后卫的首选；极端版是“追屁股/top-lock”。代价是身后空间被让出，容易被加速突破。",
@@ -97,6 +98,7 @@ const PNR_DATA = {
     under: {
       id: "under",
       name: "Under 绕下",
+      tier: "advanced",
       oneLine: "从掩护下面钻过去，放掉外线投篮。",
       description:
         "D1 从掩护人靠篮筐一侧绕过，抢先落到持球人和篮筐之间防突破。代价是放出掩护上沿的投篮空间——只敢对不准的后卫用。",
@@ -139,6 +141,7 @@ const PNR_DATA = {
     drop: {
       id: "drop",
       name: "Drop 沉退",
+      tier: "core",
       oneLine: "大个后撤护框，放掉中距离。",
       description:
         "D5 后撤到禁区前沿保护篮筐，D1 追着持球人绕过掩护。宁可让对手投中距离，也不让他轻松上篮。",
@@ -181,6 +184,7 @@ const PNR_DATA = {
     hard_hedge: {
       id: "hard_hedge",
       name: "强延误 Hard Hedge / Show",
+      tier: "advanced",
       oneLine: "大个冲出弧顶强干扰，逼你后撤。",
       description:
         "D5 在挡拆瞬间大幅冲出弧顶，强力阻断持球人中路路线，逼其后撤，随后再赶紧回防。破坏性强，但大个一旦冲出去，身后空间巨大、回防压力极大。",
@@ -223,6 +227,7 @@ const PNR_DATA = {
     soft_hedge: {
       id: "soft_hedge",
       name: "弱延误 Soft Hedge / Flat",
+      tier: "advanced",
       oneLine: "小幅虚晃保阵型，逼你投中距离。",
       description:
         "D5 只做小幅度上前虚晃（或平移站位 Flat），象征性干扰一下就迅速回到原位，更保守、保持防守阵型完整。逼持球人出手不那么舒服的中距离。",
@@ -265,6 +270,7 @@ const PNR_DATA = {
     switch: {
       id: "switch",
       name: "Switch 换防",
+      tier: "core",
       oneLine: "干脆换人，但会换出错位。",
       description:
         "D1 与 D5 直接交换对位：大个换防持球人、小个换防掩护人。消除了掩护制造的空当，代价是产生体型/速度错位。",
@@ -307,6 +313,7 @@ const PNR_DATA = {
     trap: {
       id: "trap",
       name: "Trap 夹击",
+      tier: "core",
       oneLine: "两人包夹逼出球，但放空了一个人。",
       description:
         "D1、D5 同时扑向持球人，逼他提前出球，制造失误或迫使非持球点处理球。代价是场上必然放空一名进攻人。",

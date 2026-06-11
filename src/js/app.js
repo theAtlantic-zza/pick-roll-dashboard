@@ -23,6 +23,8 @@
 
   const el = {
     defenseOptions: document.getElementById("defense-options"),
+    defenseOptionsAdv: document.getElementById("defense-options-adv"),
+    advToggle: document.getElementById("adv-toggle"),
     handlerOptions: document.getElementById("handler-options"),
     screenerOptions: document.getElementById("screener-options"),
     playerToggle: document.getElementById("player-toggle"),
@@ -108,14 +110,17 @@
   /* ---------- 控制项 ---------- */
   function buildControls() {
     el.defenseOptions.innerHTML = "";
+    el.defenseOptionsAdv.innerHTML = "";
     Object.values(PNR_DATA.defenseReactions).forEach((r) => {
       const b = document.createElement("button");
       b.className = "opt";
+      b.dataset.id = r.id;
       b.innerHTML =
         `<span class="opt-name">${r.name}</span>` +
         `<span class="opt-desc">${r.oneLine}</span>`;
       b.onclick = () => chooseDefense(r.id);
-      el.defenseOptions.appendChild(b);
+      // 核心防守默认显示，进阶防守收进折叠区
+      (r.tier === "advanced" ? el.defenseOptionsAdv : el.defenseOptions).appendChild(b);
     });
 
     renderPlayerOptions(el.handlerOptions, PNR_DATA.playerTypes.ballHandler, "handler");
@@ -138,8 +143,11 @@
   }
 
   function syncActive() {
+    // 防守按钮分布在核心/进阶两个容器，用 data-id 匹配
+    [...el.defenseOptions.children, ...el.defenseOptionsAdv.children].forEach((b) => {
+      b.classList.toggle("active", b.dataset.id === state.defense);
+    });
     const sets = [
-      [el.defenseOptions, Object.values(PNR_DATA.defenseReactions), state.defense],
       [el.handlerOptions, PNR_DATA.playerTypes.ballHandler, state.handler],
       [el.screenerOptions, PNR_DATA.playerTypes.screener, state.screener]
     ];
@@ -454,6 +462,10 @@
   el.playerToggle.onclick = () => {
     el.playerToggle.classList.toggle("collapsed");
     el.playerBody.classList.toggle("collapsed");
+  };
+  el.advToggle.onclick = () => {
+    el.advToggle.classList.toggle("collapsed");
+    el.defenseOptionsAdv.classList.toggle("collapsed");
   };
 
   /* ---------- 绑定 + 启动 ---------- */
