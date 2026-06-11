@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pick &amp; Roll Lab 挡拆实验台</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ============ 左侧：防守视角控制 ============ -->
+    <aside class="panel panel-left">
+      <header class="brand">
+        <h1>Pick &amp; Roll Lab</h1>
+        <p class="brand-sub">攻防阅读 · 高位挡拆</p>
+      </header>
+
+      <section class="control-group">
+        <h2 class="control-title">第一步 · 你是防守，怎么应对？</h2>
+        <div id="defense-options" class="options-list"></div>
+      </section>
+
+      <section class="control-group" id="player-group">
+        <button id="player-toggle" class="control-title toggle collapsed" type="button">
+          <span>进攻配置（可选）</span>
+          <span class="chevron">▸</span>
+        </button>
+        <div id="player-body" class="collapsible collapsed">
+          <label class="mini-label">持球人</label>
+          <div id="handler-options" class="options-list compact"></div>
+          <label class="mini-label">掩护人</label>
+          <div id="screener-options" class="options-list compact"></div>
+        </div>
+      </section>
+
+      <section class="control-group actions">
+        <button id="btn-reset" class="btn btn-ghost">↺ 重新开始</button>
+      </section>
+    </aside>
+
+    <!-- ============ 中间：战术板 + 解说 ============ -->
+    <main class="court-wrap">
+      <!-- 解说字幕条 -->
+      <div id="narrator" class="narrator">
+        <span id="narrator-text">挡拆已经发起：中锋上来给持球后卫做掩护。如果你是防守，你会怎么应对？</span>
+      </div>
+
+      <div id="court" class="court">
+        <svg class="court-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <rect x="2" y="2" width="96" height="96" class="line" />
+          <rect x="38" y="2" width="24" height="34" class="line" />
+          <circle cx="50" cy="36" r="9" class="line" />
+          <circle cx="50" cy="10" r="1.6" class="rim" />
+          <line x1="44" y1="6" x2="56" y2="6" class="line" />
+          <path d="M 12 2 L 12 28 A 38 38 0 0 0 88 28 L 88 2" class="line three" />
+        </svg>
+
+        <svg id="path-layer" class="path-layer" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+        <div id="opp-layer" class="opp-layer"></div>
+        <div id="dot-layer" class="dot-layer"></div>
+
+        <!-- 场上步进控制 -->
+        <div id="stage-controls" class="stage-controls hidden">
+          <button id="btn-next" class="btn btn-primary">下一步 →</button>
+        </div>
+      </div>
+
+      <div class="court-legend">
+        <span><i class="lg lg-off"></i> 进攻</span>
+        <span><i class="lg lg-def"></i> 防守</span>
+        <span><i class="lg lg-ball"></i> 球</span>
+        <span><i class="lg lg-opp"></i> 机会点（点击查看）</span>
+      </div>
+    </main>
+
+    <!-- ============ 右侧：解读面板 ============ -->
+    <aside class="panel panel-right">
+      <section class="info-block">
+        <h2 class="info-title">当前防守策略</h2>
+        <p id="defense-name" class="defense-name">— 等待你的选择 —</p>
+        <p id="defense-one" class="defense-one"></p>
+        <p id="defense-desc" class="defense-desc">从左侧选一种防守应对方式，看看它会暴露哪些机会。</p>
+      </section>
+
+      <section class="info-block" id="read-block">
+        <h2 class="info-title">看球顺序（防守这么做，该看哪里）</h2>
+        <ol id="read-order" class="read-order"></ol>
+      </section>
+
+      <section class="info-block" id="opp-block">
+        <h2 class="info-title">暴露的机会点</h2>
+        <ul id="opp-list" class="opp-list"></ul>
+      </section>
+
+      <section class="info-block detail" id="detail-block">
+        <h2 class="info-title">机会点详解</h2>
+        <div id="opp-detail" class="opp-detail empty">点击场上或列表中的机会点，看它为什么成立。</div>
+      </section>
+
+      <section class="info-block takeaway hidden" id="takeaway-block">
+        <h2 class="info-title">一句话看懂</h2>
+        <p id="takeaway-text" class="takeaway-text"></p>
+      </section>
+    </aside>
+
+  </div>
+
+  <script src="src/data/data.js"></script>
+  <script src="src/js/app.js"></script>
+</body>
+</html>

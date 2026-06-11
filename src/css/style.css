@@ -1,0 +1,492 @@
+/* ============ 基础 ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d1117;
+  --panel: #151b24;
+  --panel-2: #1c2430;
+  --border: #283242;
+  --text: #e6edf3;
+  --text-dim: #8b97a7;
+  --accent: #f5a623;          /* 进攻 / 主色 */
+  --offense: #f5a623;
+  --defense: #4aa3ff;
+  --ball: #ff7043;
+  --court-line: #3a4658;
+
+  --q-high: #2fd27a;          /* 高质量 */
+  --q-medium: #f5c542;        /* 中等 */
+  --q-low: #ff6b6b;           /* 低质量 */
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", Segoe UI, sans-serif;
+  font-size: 14px;
+}
+
+/* ============ 三栏布局 ============ */
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr 340px;
+  gap: 14px;
+  height: 100vh;
+  padding: 14px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  overflow-y: auto;
+}
+
+/* ============ 左栏 ============ */
+.brand h1 {
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--offense), var(--ball));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.brand-sub { color: var(--text-dim); font-size: 12px; margin-top: 4px; }
+
+.control-group { margin-top: 22px; }
+.control-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.options-list { display: flex; flex-direction: column; gap: 8px; }
+
+.opt {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s, background .15s, transform .1s;
+}
+.opt:hover { border-color: #3d4c63; }
+.opt:active { transform: scale(.98); }
+.opt.active {
+  border-color: var(--accent);
+  background: #2a2417;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.opt .opt-name { font-weight: 600; display: block; }
+.opt .opt-desc { color: var(--text-dim); font-size: 11px; margin-top: 3px; line-height: 1.4; }
+
+.actions { display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+.btn:hover { border-color: #3d4c63; }
+.btn:active { transform: scale(.98); }
+.btn-primary {
+  background: linear-gradient(90deg, var(--offense), var(--ball));
+  border: none;
+  color: #1a1206;
+  font-weight: 700;
+}
+.btn-ghost { background: transparent; color: var(--text-dim); }
+
+/* ============ 中间战术板 ============ */
+.court-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 解说字幕条 */
+.narrator {
+  width: min(100%, 70vh);
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, rgba(245,166,35,.12), rgba(255,112,67,.06));
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.narrator::before { content: "🎙"; font-size: 16px; }
+.narrator.flash { animation: narratorFlash .5s ease; }
+@keyframes narratorFlash {
+  0% { background: rgba(245,166,35,.3); }
+  100% { background: linear-gradient(90deg, rgba(245,166,35,.12), rgba(255,112,67,.06)); }
+}
+
+/* 图例 */
+.court-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.court-legend span { display: flex; align-items: center; gap: 5px; }
+.lg { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.lg-off { background: var(--offense); }
+.lg-def { background: var(--defense); }
+.lg-ball { background: var(--ball); width: 9px; height: 9px; }
+.lg-opp { background: rgba(47,210,122,.4); border: 1.5px dashed var(--q-high); }
+
+/* 场上步进控制 */
+.stage-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+.stage-controls.hidden { display: none; }
+.mini-label { display: block; font-size: 11px; color: var(--text-dim); margin: 8px 0 5px; }
+
+/* 折叠 */
+.control-title.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.control-title.toggle .chevron { transition: transform .2s; color: var(--text-dim); }
+.control-title.toggle:not(.collapsed) .chevron { transform: rotate(90deg); }
+.collapsible { overflow: hidden; max-height: 600px; transition: max-height .3s ease; }
+.collapsible.collapsed { max-height: 0; }
+.options-list.compact .opt { padding: 7px 9px; }
+.options-list.compact .opt-desc { display: none; }
+.hidden { display: none !important; }
+
+/* takeaway */
+.takeaway { border: 1px solid rgba(245,166,35,.35); border-radius: 10px; padding: 14px; background: rgba(245,166,35,.06); }
+.takeaway-text { font-size: 14px; line-height: 1.6; color: var(--text); }
+.court {
+  position: relative;
+  width: min(100%, 70vh);
+  aspect-ratio: 1 / 1;
+  background:
+    radial-gradient(circle at 50% 20%, #1b2738, #0f1620 70%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.court-lines, .path-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.court-lines .line {
+  fill: none;
+  stroke: var(--court-line);
+  stroke-width: 0.5;
+}
+.court-lines .three { stroke: var(--court-line); stroke-width: 0.6; }
+.court-lines .rim { fill: none; stroke: var(--ball); stroke-width: 0.7; }
+
+.path-layer .path-line {
+  fill: none;
+  stroke-width: 0.7;
+  stroke-dasharray: 2 1.5;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.path-layer .path-line.show { opacity: 0.8; }
+.path-layer .path-off { stroke: var(--offense); }
+.path-layer .path-screen { stroke: var(--ball); }
+
+/* 动态层 */
+.dot-layer, .opp-layer { position: absolute; inset: 0; }
+.opp-layer { pointer-events: none; }
+
+/* 圆点 */
+.dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;            /* 以坐标为中心 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0d1117;
+  transition: left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
+              opacity .35s, filter .35s, box-shadow .25s;
+}
+/* 常驻角色标签 */
+.dot .dot-tag {
+  position: absolute;
+  bottom: -15px;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+  pointer-events: none;
+  padding: 0 3px;
+  border-radius: 4px;
+  background: rgba(13,17,23,.65);
+}
+.dot-offense {
+  background: var(--offense);
+  box-shadow: 0 0 0 2px rgba(245,166,35,.25);
+}
+.dot-offense .dot-tag { color: #f0c98a; }
+.dot-defense {
+  background: var(--defense);
+  color: #06121f;
+  width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  font-size: 9px;
+  box-shadow: 0 0 0 2px rgba(74,163,255,.2);
+}
+.dot-defense .dot-tag { color: #9ec8ff; bottom: -14px; }
+
+/* 聚焦：非聚焦球员变暗淡出，让初学者只看当前在动的人 */
+.dot-layer.focusing .dot { opacity: .28; filter: grayscale(.5); }
+.dot-layer.focusing .dot.focused { opacity: 1; filter: none; }
+.dot.focused { box-shadow: 0 0 0 3px #fff, 0 0 16px rgba(255,255,255,.5); z-index: 7; }
+.dot.focused .dot-tag { color: #fff; }
+.dot-ball {
+  background: var(--ball);
+  width: 16px; height: 16px; margin: -8px 0 0 -8px;
+  border: 2px solid #fff3e0;
+  box-shadow: 0 0 8px rgba(255,112,67,.7);
+  z-index: 5;
+}
+.dot-handler { box-shadow: 0 0 0 3px rgba(245,166,35,.5); }
+
+/* 接球目标强调 */
+.dot.receiving {
+  animation: receive 0.7s ease-out;
+  z-index: 6;
+}
+@keyframes receive {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,.8); }
+  40%  { box-shadow: 0 0 0 10px rgba(255,255,255,.35); transform: scale(1.25); }
+  100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
+}
+
+/* 传球轨迹线（虚线） */
+.path-layer .pass-line {
+  fill: none;
+  stroke: var(--ball);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-dasharray: 3 2;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.path-layer .pass-line.show { opacity: 0.9; }
+
+/* 出手/攻框轨迹线（飞向篮筐，实线高亮） */
+.path-layer .shot-line {
+  fill: none;
+  stroke: #ffe07a;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity .25s;
+  filter: drop-shadow(0 0 2px rgba(255,224,122,.8));
+}
+.path-layer .shot-line.show { opacity: 1; }
+
+/* 出手瞬间强调 */
+.dot.shooting { animation: shooting .5s ease-out; }
+@keyframes shooting {
+  0% { transform: scale(1.25); box-shadow: 0 0 0 0 rgba(255,224,122,.9); }
+  100% { transform: scale(1); box-shadow: 0 0 0 14px transparent; }
+}
+
+/* 球员跑动轨迹线（进攻=橙，防守=蓝） */
+.path-layer .move-line {
+  fill: none;
+  stroke-width: 0.7;
+  stroke-linecap: round;
+  stroke-dasharray: 2.2 1.8;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.path-layer .move-line.show { opacity: .75; }
+.path-layer .move-line.off { stroke: var(--offense); }
+.path-layer .move-line.def { stroke: var(--defense); }
+
+/* 跑动中的球员轻微强调 */
+.dot.moving { z-index: 6; box-shadow: 0 0 0 2px rgba(255,255,255,.35); }
+
+/* 机会点高亮 */
+.opp {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(.6);
+  transition: opacity .3s, transform .3s, box-shadow .2s;
+  border: 2px dashed;
+}
+.opp.show { opacity: 1; transform: scale(1); }
+.opp:hover { transform: scale(1.12); }
+.opp.selected { box-shadow: 0 0 0 3px rgba(255,255,255,.4); }
+
+.opp .opp-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulse 1.8s ease-out infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 currentColor; opacity: .5; }
+  100% { box-shadow: 0 0 0 14px transparent; opacity: 0; }
+}
+.opp .opp-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  position: absolute;
+  bottom: -18px;
+  white-space: nowrap;
+  pointer-events: none;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(13,17,23,.82);
+  border: 1px solid currentColor;
+}
+/* 被选中的机会点标签提到上方，避开与下方球员标签重叠 */
+.opp.selected .opp-tag { bottom: auto; top: -20px; z-index: 9; }
+
+.opp.q-high   { border-color: var(--q-high);   background: rgba(47,210,122,.18); color: var(--q-high); }
+.opp.q-medium { border-color: var(--q-medium); background: rgba(245,197,66,.18); color: var(--q-medium); }
+.opp.q-low    { border-color: var(--q-low);    background: rgba(255,107,107,.18); color: var(--q-low); }
+
+/* ============ 右栏 ============ */
+.info-block { margin-bottom: 20px; }
+.info-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.defense-name { font-size: 17px; font-weight: 700; color: var(--accent); }
+.defense-desc { color: var(--text-dim); margin-top: 6px; line-height: 1.6; font-size: 13px; }
+
+.read-order { list-style: none; counter-reset: step; }
+.read-order li {
+  position: relative;
+  padding: 7px 0 7px 28px;
+  line-height: 1.5;
+  border-bottom: 1px dashed var(--border);
+  color: var(--text);
+  font-size: 13px;
+}
+.read-order li:last-child { border-bottom: none; }
+.read-order li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 7px;
+  width: 18px; height: 18px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
+
+.opp-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.opp-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+  font-size: 13px;
+}
+.opp-list li:hover { background: #222c3a; }
+.opp-list li:active { transform: scale(.99); }
+.opp-list li.selected { background: #2a3344; }
+.opp-list li.q-high   { border-left-color: var(--q-high); }
+.opp-list li.q-medium { border-left-color: var(--q-medium); }
+.opp-list li.q-low    { border-left-color: var(--q-low); }
+
+.quality-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.quality-badge.q-high   { background: rgba(47,210,122,.18); color: var(--q-high); }
+.quality-badge.q-medium { background: rgba(245,197,66,.18); color: var(--q-medium); }
+.quality-badge.q-low    { background: rgba(255,107,107,.18); color: var(--q-low); }
+
+.opp-detail.empty { color: var(--text-dim); font-style: italic; font-size: 13px; }
+.opp-detail .d-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.opp-detail .d-row { margin: 10px 0; line-height: 1.6; font-size: 13px; }
+.opp-detail .d-label { color: var(--text-dim); display: block; font-size: 12px; margin-bottom: 2px; }
+.opp-detail .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.opp-detail .tag {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+.opp-detail .tag.good { color: var(--q-high); border-color: rgba(47,210,122,.4); }
+.opp-detail .tag.bad  { color: var(--q-low);  border-color: rgba(255,107,107,.4); }
+
+/* 响应式：窄屏堆叠（仅基础适配，不做复杂移动端） */
+@media (max-width: 1000px) {
+  .app { grid-template-columns: 1fr; height: auto; overflow-y: auto; }
+  .court { width: min(100%, 92vw); }
+}
